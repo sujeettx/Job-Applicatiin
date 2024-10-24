@@ -19,10 +19,12 @@ app.use(cors({
 // Import routes
 const companyRoutes = require("./Routes/companyRoutes");
 const jobRoutes = require("./Routes/JobRoutes");
+const jobAlertRoute = require("./Routes/jobalertRoutes");
 
 // Set up routes
 app.use("/company", companyRoutes);
 app.use("/jobs", jobRoutes);
+app.use("/jobalert", jobAlertRoute);
 
 // Error handling middleware
 app.use(notFound);
