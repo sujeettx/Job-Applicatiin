@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const cors = require('cors');
 const { notFound, errorHandler } = require("./middleware/ErrorMiddleware");
 const connectDB = require('./Config/ConnectDb')
 // Load environment variables from .env file
@@ -10,13 +11,17 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware to parse JSON requests
 app.use(express.json());
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+  }));
 
 // Import routes
 const companyRoutes = require("./Routes/companyRoutes");
-const jobRoutes = require("./Routes/jobRoutes");
+const jobRoutes = require("./Routes/JobRoutes");
 
 // Set up routes
-app.use("/companies", companyRoutes);
+app.use("/company", companyRoutes);
 app.use("/jobs", jobRoutes);
 
 // Error handling middleware

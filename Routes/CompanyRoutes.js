@@ -13,6 +13,6 @@ router.post("/register", registerController);
 router.post("/login", loginController);
 
 // Route to fetch all companies (or users)
-router.get("/Allcompanyies", fetchAllCompaniesController); // Correct
+router.get("/allcompany", fetchAllCompaniesController); // Correct
 
 module.exports = router;

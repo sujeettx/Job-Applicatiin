@@ -22,7 +22,10 @@ const postJobController = expressAsyncHandler(async (req, res) => {
   });
 
   if (job) {
-    res.status(201).json(job); // Respond with the created job
+    return res.status(201).json({
+      scucess:true,
+      message: "Job posted successfully",
+    }); // Respond with the created job
   } else {
     res.status(400);
     throw new Error("Job posting failed");
@@ -49,8 +52,6 @@ const fetchJobByIdController = expressAsyncHandler(async (req, res) => {
     throw new Error("Job not found");
   }
 });
-
-// Controller to delete a job
 const deleteJobController = expressAsyncHandler(async (req, res) => {
   const jobId = req.params.id;
 
@@ -58,7 +59,10 @@ const deleteJobController = expressAsyncHandler(async (req, res) => {
   const job = await Jobs.findById(jobId);
 
   if (job) {
-    await job.remove(); // Remove the job from the database
+    // Use the correct Mongoose delete method
+    await Jobs.findByIdAndDelete(jobId);
+    // OR await job.deleteOne();
+    
     res.status(200).json({ message: "Job deleted successfully" });
   } else {
     res.status(404);
@@ -84,7 +88,10 @@ const updateJobController = expressAsyncHandler(async (req, res) => {
     job.DeadlineDate = DeadlineDate || job.DeadlineDate;
 
     const updatedJob = await job.save(); // Save the updated job
-    res.status(200).json(updatedJob); // Respond with the updated job data
+    res.status(200).json({
+      message:"job updated successfully",
+      updatedJob,
+    }); // Respond with the updated job data
   } else {
     res.status(404);
     throw new Error("Job not found");
