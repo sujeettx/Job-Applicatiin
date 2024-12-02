@@ -9,21 +9,22 @@ const createTransporter = () => {
       pass: process.env.EMAIL_PASS,
     },
     tls: {
-      rejectUnauthorized: false
-    }
+      rejectUnauthorized: false,
+    },
   });
 
   return transporter;
 };
 
-const sendEmail = async (to, subject, text) => {
+const sendEmail = async (to, subject, text, html = null) => {
   try {
     const transporter = createTransporter();
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to,
       subject,
-      text,
+      text, // Plain text fallback
+      ...(html && { html }), // Add HTML content if provided
     };
 
     await transporter.sendMail(mailOptions);

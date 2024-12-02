@@ -24,6 +24,7 @@ const loginController = expressAsyncHandler(async (req, res) => {
 
 // Registration
 const registerController = expressAsyncHandler(async (req, res) => {
+  await top10ComapnyConterorsController();
   const { name, company_name, Company_email, phoneNumber, employee_size, password } = req.body;
 
   // Check if all required fields are present
@@ -76,8 +77,32 @@ const fetchAllCompaniesController = expressAsyncHandler(async (req, res) => {
   res.json(companies); // Return the companies in the response
 });
 
+
+// api for getting top 10 companies
+
+let cashedTopUsers = [];
+const top10ComapnyConterorsController = expressAsyncHandler(async (req, res) =>{
+  try {
+    const topCompany = await Company.find()
+    .sort({employee_size: -1})
+    .limit(5);
+   cashedTopUsers = topCompany;  
+   if(res){
+    res.json(cashedTopUsers);
+   }
+   console.log('Top users updated:', cachedTopUsers);
+  } catch (error) {
+      console.error('Error updating top users:', error);
+      if(res){
+        res.status(500).json({message: 'Failed to get top 10 companies.'});
+      }
+  }
+})
+
 module.exports = {
   loginController,
   registerController,
   fetchAllCompaniesController,
+  top10ComapnyConterorsController,
+  cashedTopUsers,
 };
